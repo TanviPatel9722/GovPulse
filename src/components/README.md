@@ -28,3 +28,16 @@ Focused panels:
 - Redesign the Law: before/after risk and consultation plan
 
 Stakeholder intelligence should use a spider-web map where distance reflects influence plus exposure.
+
+## Latest UX Simplification
+
+The large launch-posture report block has been removed from the main page.
+
+The first analysis view should now prioritize:
+
+- four action cards
+- one focused active panel
+- resident-centered sentiment language
+- confidence and validation notes instead of false-precision public-opinion percentages
+
+People Sentiment should answer: "How will people react, and what do we still need to validate?"
