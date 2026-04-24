@@ -17,3 +17,21 @@ Planned live source paths:
 LinkedIn calls are rate-gated for the 30 requests/minute limit.
 
 All CrustData-backed sentiment signals must be labeled as partial public activity signals, not representative public opinion.
+
+## Economic Reliability Layer
+
+Official statistical sources should be preferred for numeric baselines.
+
+Initial source-backed baselines:
+
+- Census ACS: income, poverty, households, labor participation, housing burden
+- BLS: unemployment and CPI pressure
+
+Modeled policy-cost ranges must be labeled as:
+
+- source-backed
+- model-estimated
+- scenario assumption
+- demo estimate
+
+For the AI hiring transparency demo, industry and financial metrics should show ranges such as employer compliance cost, audit-market exposure, appeal workload, and enforcement capacity.
