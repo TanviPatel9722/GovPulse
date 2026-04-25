@@ -159,13 +159,13 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
   const ActiveInsightIcon = activeMeta.icon;
 
   return (
-    <main className="min-h-screen overflow-x-hidden lg:h-screen lg:overflow-hidden">
+    <main className="min-h-screen overflow-x-hidden">
       <div className="pointer-events-none fixed inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 py-4 sm:px-6 lg:h-screen lg:overflow-hidden lg:px-8 lg:py-5">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
         <TopBar analysis={analysis} />
 
-        <section className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[350px_minmax(0,1fr)] xl:grid-cols-[370px_minmax(0,1fr)]">
-          <div className="dashboard-scrollbar space-y-4 lg:min-h-0 lg:overflow-y-auto lg:pr-1">
+        <section className="grid gap-4 lg:grid-cols-[350px_minmax(0,1fr)] xl:grid-cols-[370px_minmax(0,1fr)]">
+          <div className="space-y-4">
             <HeroCopy />
             <PolicyInputCard
               value={policyText}
@@ -186,14 +186,14 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
             <StatusStrip notice={notice} error={error} />
           </div>
 
-          <div className="flex min-h-0 flex-col gap-4">
+          <div className="space-y-4">
             {!analysis ? (
               <EmptyAnalysisState loading={loading} />
             ) : (
               <>
                 <InsightSelectorCards analysis={analysis} activeInsight={activeInsight} onSelect={setActiveInsight} />
-                <Card className="min-h-0 flex-1 overflow-hidden">
-                  <CardContent className="flex h-full min-h-0 flex-col p-0">
+                <Card className="overflow-hidden">
+                  <CardContent className="p-0">
                     <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
                       <div className="flex items-center gap-2">
                         <ActiveInsightIcon className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -204,7 +204,7 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
                       </div>
                       <Badge variant="secondary">Focused view</Badge>
                     </div>
-                    <div className="dashboard-scrollbar min-h-0 flex-1 p-5 lg:overflow-y-auto">
+                    <div className="dashboard-scrollbar p-5 lg:min-h-[560px] lg:max-h-[calc(100vh-140px)] lg:overflow-y-auto">
                       <ActiveInsightPanel analysis={analysis} activeInsight={activeInsight} />
                     </div>
                   </CardContent>
