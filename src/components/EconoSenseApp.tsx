@@ -46,8 +46,8 @@ type RedesignOption = PolicyAnalysis["redesignBrief"]["redesign_options"][number
 type ConsultationItem = PolicyAnalysis["redesignBrief"]["stakeholder_consultation_plan"][number];
 
 interface EconoSenseAppProps {
-  initialAnalysis: PolicyAnalysis;
-  initialNotice: string;
+  initialAnalysis?: PolicyAnalysis | null;
+  initialNotice?: string | null;
 }
 
 const insightMeta: Record<
@@ -99,17 +99,17 @@ const policyTypes = [
 ];
 
 export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppProps) {
-  const [policyText, setPolicyText] = useState(initialAnalysis.policyText);
-  const [jurisdiction, setJurisdiction] = useState(initialAnalysis.parsedPolicy.jurisdiction);
+  const [policyText, setPolicyText] = useState(initialAnalysis?.policyText ?? DEMO_POLICY_TEXT);
+  const [jurisdiction, setJurisdiction] = useState(initialAnalysis?.parsedPolicy.jurisdiction ?? "Washington, DC");
   const [policyType, setPolicyType] = useState(
-    /plastic|bag|retail|environment/i.test(initialAnalysis.policyText)
+    /plastic|bag|retail|environment/i.test(initialAnalysis?.policyText ?? DEMO_POLICY_TEXT)
       ? "Environmental retail regulation"
       : "AI governance"
   );
-  const [analysis, setAnalysis] = useState<PolicyAnalysis | null>(initialAnalysis);
+  const [analysis, setAnalysis] = useState<PolicyAnalysis | null>(initialAnalysis ?? null);
   const [activeInsight, setActiveInsight] = useState<InsightKey>("sentiment");
   const [loading, setLoading] = useState(false);
-  const [notice, setNotice] = useState<string | null>(initialNotice);
+  const [notice, setNotice] = useState<string | null>(initialNotice ?? null);
   const [error, setError] = useState<string | null>(null);
 
   const requestAnalysis = useCallback(
