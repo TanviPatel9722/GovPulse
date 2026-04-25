@@ -161,11 +161,11 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
   return (
     <main className="min-h-screen overflow-x-hidden lg:h-screen lg:overflow-hidden">
       <div className="pointer-events-none fixed inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-4 py-4 sm:px-6 lg:h-screen lg:overflow-hidden lg:px-8 lg:py-5">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 px-4 py-4 sm:px-6 lg:h-screen lg:overflow-hidden lg:px-8 lg:py-5">
         <TopBar analysis={analysis} />
 
-        <section className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[390px_minmax(0,1fr)]">
-          <div className="space-y-4 lg:min-h-0 lg:overflow-y-auto lg:pr-1">
+        <section className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[350px_minmax(0,1fr)] xl:grid-cols-[370px_minmax(0,1fr)]">
+          <div className="dashboard-scrollbar space-y-4 lg:min-h-0 lg:overflow-y-auto lg:pr-1">
             <HeroCopy />
             <PolicyInputCard
               value={policyText}
@@ -186,25 +186,25 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
             <StatusStrip notice={notice} error={error} />
           </div>
 
-          <div className="space-y-4 lg:min-h-0">
+          <div className="flex min-h-0 flex-col gap-4">
             {!analysis ? (
               <EmptyAnalysisState loading={loading} />
             ) : (
               <>
                 <InsightSelectorCards analysis={analysis} activeInsight={activeInsight} onSelect={setActiveInsight} />
-                <Card className="overflow-hidden">
-                  <CardContent className="p-0">
-                    <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+                <Card className="min-h-0 flex-1 overflow-hidden">
+                  <CardContent className="flex h-full min-h-0 flex-col p-0">
+                    <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
                       <div className="flex items-center gap-2">
-                        <ActiveInsightIcon className="h-4 w-4 text-primary" aria-hidden="true" />
+                        <ActiveInsightIcon className="h-5 w-5 text-primary" aria-hidden="true" />
                         <div>
-                          <div className="text-sm font-semibold text-white">{activeMeta.label}</div>
-                          <div className="text-xs text-muted-foreground">{activeMeta.caption}</div>
+                          <div className="text-base font-semibold text-white">{activeMeta.label}</div>
+                          <div className="text-sm text-muted-foreground">{activeMeta.caption}</div>
                         </div>
                       </div>
                       <Badge variant="secondary">Focused view</Badge>
                     </div>
-                    <div className="p-4 lg:max-h-[calc(100vh-225px)] lg:overflow-y-auto">
+                    <div className="dashboard-scrollbar min-h-0 flex-1 p-5 lg:overflow-y-auto">
                       <ActiveInsightPanel analysis={analysis} activeInsight={activeInsight} />
                     </div>
                   </CardContent>
@@ -436,7 +436,7 @@ function InsightSelectorCards({
   };
 
   return (
-    <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid shrink-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
       {(Object.keys(insightMeta) as InsightKey[]).map((key) => {
         const meta = insightMeta[key];
         const Icon = meta.icon;
@@ -447,7 +447,7 @@ function InsightSelectorCards({
             key={key}
             type="button"
             onClick={() => onSelect(key)}
-            className={`group rounded-lg border p-3 text-left transition-all ${
+            className={`group rounded-lg border p-4 text-left transition-all ${
               active
                 ? "border-primary/50 bg-primary/12 shadow-[0_0_28px_rgba(53,213,238,0.12)]"
                 : "border-white/10 bg-white/[0.03] hover:border-primary/35 hover:bg-white/[0.06]"
@@ -459,8 +459,8 @@ function InsightSelectorCards({
               </div>
               <Badge variant={active ? "default" : "secondary"}>{values[key]}</Badge>
             </div>
-            <div className="text-sm font-semibold text-white">{meta.label}</div>
-            <div className="mt-1 text-xs leading-5 text-muted-foreground">{meta.caption}</div>
+            <div className="text-base font-semibold text-white">{meta.label}</div>
+            <div className="mt-1 text-sm leading-5 text-muted-foreground">{meta.caption}</div>
           </button>
         );
       })}
@@ -503,7 +503,7 @@ function PeopleSentimentPanel({ analysis }: { analysis: PolicyAnalysis }) {
       <PanelHeader
         badge="Public Sentiment"
         title={`How the most affected people may react: ${analysis.peopleSentimentForecast.overall_sentiment_summary}`}
-        action={sentimentCitation()}
+        action={`Cited: ${sentimentCitation()}`}
       />
       <div className="grid gap-3 md:grid-cols-3">
         <SmallCard>
@@ -533,7 +533,7 @@ function PeopleSentimentPanel({ analysis }: { analysis: PolicyAnalysis }) {
             <MiniLine label="What they may feel" value={group.likely_quotes[0] ?? "Needs local signal"} />
             <MiniLine label="What they may like" value={group.support_drivers[0] ?? "Needs local signal"} />
             <MiniLine label="What they may doubt" value={group.opposition_drivers[0] ?? "Unclear"} />
-            <MiniLine label="Cited" value={sentimentCitation()} />
+          <MiniLine label="Cited" value={sentimentCitation()} />
           </SmallCard>
         ))}
       </div>
@@ -764,7 +764,7 @@ function PanelHeader({ badge, title, action }: { badge: string; title: string; a
     <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
       <div>
         <Badge variant="secondary">{badge}</Badge>
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">{truncate(title, 160)}</p>
+        <p className="mt-2 max-w-4xl text-base leading-7 text-slate-300">{truncate(title, 240)}</p>
       </div>
       <Badge variant="default">{action}</Badge>
     </div>
@@ -772,7 +772,7 @@ function PanelHeader({ badge, title, action }: { badge: string; title: string; a
 }
 
 function SmallCard({ children }: { children: ReactNode }) {
-  return <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">{children}</div>;
+  return <div className="rounded-md border border-white/10 bg-white/[0.035] p-4">{children}</div>;
 }
 
 function StakeholderSpiderWeb({ stakeholders }: { stakeholders: Stakeholder[] }) {
@@ -850,15 +850,15 @@ function StakeholderSpiderWeb({ stakeholders }: { stakeholders: Stakeholder[] })
 
 function MiniLine({ label, value }: { label: string; value?: string | number }) {
   return (
-    <div className="mt-1 text-xs leading-5">
+    <div className="mt-2 text-sm leading-6">
       <span className="font-semibold text-slate-300">{label}:</span>{" "}
-      <span className="text-muted-foreground">{truncate(String(value ?? "Not available"), 118)}</span>
+      <span className="text-muted-foreground">{truncate(String(value ?? "Not available"), 210)}</span>
     </div>
   );
 }
 
 function sentimentCitation() {
-  return "Cited: policy text, public signals";
+  return "policy text, public signals";
 }
 
 function sourceCitation(sourceIds?: string[]) {
@@ -895,7 +895,7 @@ function CompactDetails({ label, children }: { label: string; children: ReactNod
   );
 }
 
-function getTopSentimentGroups(analysis: PolicyAnalysis, limit = 5): PublicGroup[] {
+function getTopSentimentGroups(analysis: PolicyAnalysis, limit = 4): PublicGroup[] {
   const allGroups = analysis.peopleSentimentForecast.public_groups;
   const peopleGroups = allGroups.filter((group) => isPeopleSentimentCategory(group.group_name));
   const candidateGroups = peopleGroups.length > 0 ? peopleGroups : allGroups;
@@ -1061,7 +1061,7 @@ function getStakeholderRows(analysis: PolicyAnalysis): Stakeholder[] {
 }
 
 function isPeopleSentimentCategory(groupName: string) {
-  return !/regulated entities|implementing agenc|agency staff|government agency|chamber|vendor|company|consultant|advocacy organization|public-sector contractor|platform provider/i.test(groupName);
+  return !/regulated entities|implementing agenc|agency staff|enforcement staff|government agency|chamber|vendor|company|consultant|advocacy organization|public-sector contractor|platform provider|system providers|software providers|employers using|enterprise employer/i.test(groupName);
 }
 
 function getUiPolicyText(analysis: PolicyAnalysis) {

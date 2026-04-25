@@ -76,4 +76,28 @@ body {
   .glow-line {
     background: linear-gradient(90deg, transparent, rgba(53, 213, 238, 0.72), rgba(52, 211, 153, 0.38), transparent);
   }
+
+  .dashboard-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.42) rgba(8, 13, 22, 0.72);
+  }
+
+  .dashboard-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dashboard-scrollbar::-webkit-scrollbar-track {
+    background: rgba(8, 13, 22, 0.72);
+    border-radius: 999px;
+  }
+
+  .dashboard-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.42);
+    border-radius: 999px;
+  }
+
+  .dashboard-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(53, 213, 238, 0.55);
+  }
 }
