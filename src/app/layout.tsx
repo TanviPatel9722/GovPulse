@@ -8,8 +8,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "EconoSense 2.0",
-  description: "People-sentiment-first policy pre-mortem OS for public-sector teams."
+  title: "GovPulse",
+  description: "People-sentiment-first policy pre-mortem simulator for public-sector teams.",
+  icons: {
+    icon: "/favicon.svg"
+  }
 };
 
 export default function RootLayout({

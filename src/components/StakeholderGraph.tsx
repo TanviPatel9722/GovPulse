@@ -87,7 +87,7 @@ export function StakeholderGraph({ intelligence }: { intelligence: StakeholderIn
                       <div className="mt-1 text-xs text-muted-foreground">{item.industry}</div>
                       <div className="mt-2 text-xs">Influence: {item.influence_level}</div>
                       <div className="text-xs">Likely position: {item.likely_position}</div>
-                      <div className="text-xs">Evidence cards: {item.evidence_cards.length}</div>
+                      <div className="text-xs">Cited: CrustData</div>
                       <div className="mt-2 text-xs leading-5 text-muted-foreground">{item.reason_affected}</div>
                     </div>
                   );

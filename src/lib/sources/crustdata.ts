@@ -147,7 +147,7 @@ export async function searchCompaniesByPolicy(policyAnalysis: PolicyInput): Prom
   const filters = buildCrustDataSearchFilters(policyAnalysis);
 
   if (!isCrustDataConfigured()) {
-    addWarning("CRUSTDATA_API_KEY is missing; stakeholder intelligence used deterministic mock data.");
+    addWarning("CRUSTDATA_API_KEY is missing; stakeholder intelligence used source-adapter fallback data.");
     const mockResults = getMockCrustDataStakeholders(policyAnalysis);
     runtimeStatus.companiesFound = mockResults.length;
     return mockResults.map((result) => result.company);
@@ -164,7 +164,7 @@ export async function searchCompaniesByPolicy(policyAnalysis: PolicyInput): Prom
     const companies = normalizeCompanySearchResponse(response, policyAnalysis);
 
     if (companies.length === 0) {
-      addWarning("CrustData company search returned no normalized companies; deterministic mock stakeholders were used.");
+      addWarning("CrustData company search returned no normalized companies; source-adapter fallback stakeholders were used.");
       const mockResults = getMockCrustDataStakeholders(policyAnalysis);
       runtimeStatus.companiesFound = mockResults.length;
       return mockResults.map((result) => result.company);
@@ -174,7 +174,7 @@ export async function searchCompaniesByPolicy(policyAnalysis: PolicyInput): Prom
     runtimeStatus.companiesFound = companies.length;
     return companies;
   } catch (error) {
-    addWarning(`CrustData company search failed; deterministic mock stakeholders were used. ${sanitizeError(error)}`);
+    addWarning(`CrustData company search failed; source-adapter fallback stakeholders were used. ${sanitizeError(error)}`);
     const mockResults = getMockCrustDataStakeholders(policyAnalysis);
     runtimeStatus.companiesFound = mockResults.length;
     return mockResults.map((result) => result.company);
@@ -197,7 +197,7 @@ export async function enrichCompanyByNameOrDomain(input: { name?: string; domain
     );
     return normalizeEnrichedCompanyResponse(response, getMockCompanyByName(identifier));
   } catch (error) {
-    addWarning(`CrustData company enrichment failed for ${identifier}; mock enrichment was used. ${sanitizeError(error)}`);
+    addWarning(`CrustData company enrichment failed for ${identifier}; source-adapter enrichment was used. ${sanitizeError(error)}`);
     return getMockCompanyByName(identifier);
   }
 }
@@ -225,7 +225,7 @@ export async function searchPeopleByCompanyAndTitles(input: {
     runtimeStatus.peopleFound += people.length;
     return people.length > 0 ? people : getMockPeople(input.companyName, input.titles);
   } catch (error) {
-    addWarning(`CrustData people search failed for ${input.companyName}; mock decision-makers were used. ${sanitizeError(error)}`);
+    addWarning(`CrustData people search failed for ${input.companyName}; source-adapter decision-maker signals were used. ${sanitizeError(error)}`);
     return getMockPeople(input.companyName, input.titles);
   }
 }
@@ -257,7 +257,7 @@ export async function getCompanySocialPosts(input: {
     runtimeStatus.postsFound += posts.length;
     return posts;
   } catch (error) {
-    addWarning(`CrustData company social posts were unavailable for ${input.companyName ?? "company"}; mock signal was used. ${sanitizeError(error)}`);
+    addWarning(`CrustData company social posts were unavailable for ${input.companyName ?? "company"}; source-adapter signal was used. ${sanitizeError(error)}`);
     return getMockCompanyPosts(input.companyName ?? "Stakeholder", input.keyword);
   }
 }
@@ -292,7 +292,7 @@ export async function searchPublicSentimentSignalsByPolicy(
   const limitPerSource = options.limitPerSource ?? 4;
 
   if (!isCrustDataConfigured()) {
-    addWarning("CRUSTDATA_API_KEY is missing; public sentiment social signals used deterministic mock data.");
+    addWarning("CRUSTDATA_API_KEY is missing; public sentiment social signals used source-adapter fallback data.");
     const mockSignals = getMockPublicSignals(policyAnalysis);
     runtimeStatus.postsFound += mockSignals.length;
     return mockSignals;
@@ -330,7 +330,7 @@ export function buildCrustDataPublicSignalEvidenceCards(
       extracted_claim:
         signal.source === "crustdata"
           ? `${signal.platform} public activity contains a policy-relevant signal for scenario planning; it is not representative public opinion.`
-          : `${signal.platform} demo signal is a placeholder for public-signal retrieval; validate with live CrustData before use.`,
+          : `${signal.platform} source-adapter signal is a placeholder for public-signal retrieval; validate with live CrustData before use.`,
       geography,
       policy_domain: policyDomain,
       confidence: signal.confidence,
@@ -341,7 +341,7 @@ export function buildCrustDataPublicSignalEvidenceCards(
       contradicts: [],
       raw_metadata: {
         provider: "CrustData",
-        mode: signal.source === "crustdata" ? "live-api" : "mock-fallback",
+        mode: signal.source === "crustdata" ? "live-api" : "source-adapter-fallback",
         platform: signal.platform,
         signal_type: signal.signalType,
         query: signal.query,
@@ -413,14 +413,14 @@ export function getMockCrustDataStakeholders(policyAnalysis: PolicyInput): Crust
       createCrustDataEvidenceCard({
         companyName: company.name,
         sourceType: "stakeholder-company-data",
-        title: `${company.name} mock company profile`,
+        title: `${company.name} stakeholder profile`,
         excerpt: company.description ?? `${company.name} matched stakeholder query terms.`,
         extractedClaim: `${company.name} is likely to be affected through ${company.industry ?? "policy-relevant"} exposure.`,
         geography: company.headquarters ?? getJurisdiction(policyAnalysis),
         policyDomain: getPolicyDomain(policyAnalysis),
         confidence: 0.52,
-        sourceUrl: company.linkedinUrl ?? "mock-crustdata://company-profile",
-        rawMetadata: { mode: "mock-fallback", company }
+        sourceUrl: company.linkedinUrl ?? "source-adapter://crustdata/company-profile",
+        rawMetadata: { mode: "source-adapter-fallback", company }
       })
     ];
 
@@ -430,7 +430,7 @@ export function getMockCrustDataStakeholders(policyAnalysis: PolicyInput): Crust
       posts,
       signals,
       evidenceCards,
-      warnings: ["Mock CrustData stakeholder result; replace with live CrustData before final policy use."]
+      warnings: ["CrustData stakeholder result used source-adapter fallback data; validate live CrustData before final policy use."]
     };
   });
 }

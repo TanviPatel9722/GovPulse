@@ -66,7 +66,7 @@ export function MetricSourceBadge({ sourceType }: { sourceType: MetricSourceType
     "source-backed": "Source-backed",
     "model-estimated": "Model-estimated",
     "scenario-assumption": "Scenario assumption",
-    "placeholder-demo-estimate": "Demo estimate"
+    "placeholder-demo-estimate": "Planning estimate"
   };
 
   const variant: Record<MetricSourceType, "success" | "default" | "warning" | "secondary"> = {

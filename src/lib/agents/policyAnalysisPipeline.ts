@@ -483,7 +483,7 @@ export function createDataNeedsPlan(policyAnalysis: ParsedPolicyAnalysis, mode: 
       "Missing sources are explicitly marked so downstream agents can label assumptions instead of presenting unsupported claims.",
       mode === "live"
         ? "Live mode will use configured source adapters where available and mock placeholders where a source adapter or API key is missing."
-        : "Demo mode uses typed mock fallback evidence cards for local testing."
+        : "Sample mode uses source-adapter fallback evidence cards for local testing."
     ]
   };
 }
@@ -728,7 +728,7 @@ export function updateExecutiveMemoWithImpactChain(input: {
     "",
     ...section.bullets.map((bullet) => `- ${bullet}`),
     "",
-    `Evidence cards: ${section.evidence_card_ids.join(", ")}`,
+    `Citations: ${section.evidence_card_ids.join(", ")}`,
     `Confidence: ${Math.round(section.confidence * 100)}%`,
     `Assumptions: ${section.assumptions.join(" | ")}`,
     ""
@@ -794,7 +794,7 @@ function updateExecutiveMemoWithSourceAudit(input: {
     "",
     ...section.bullets.map((bullet) => `- ${bullet}`),
     "",
-    `Evidence cards: ${section.evidence_card_ids.length > 0 ? section.evidence_card_ids.join(", ") : "assumption-labeled"}`,
+    `Citations: ${section.evidence_card_ids.length > 0 ? section.evidence_card_ids.join(", ") : "assumption-labeled"}`,
     `Confidence: ${Math.round(section.confidence * 100)}%`,
     `Assumptions: ${section.assumptions.join(" | ")}`,
     ""
@@ -845,7 +845,7 @@ async function retrieveEvidenceForNeed(
               {
                 step: "retrieveEvidence",
                 severity: "info",
-                message: `${need.source_name} returned mock fallback evidence for demo mode.`
+                message: `${need.source_name} returned source-adapter fallback evidence for sample mode.`
               }
             ]
           : []
@@ -892,19 +892,19 @@ async function runStep<T>(
   action: () => Promise<T>
 ): Promise<T> {
   const startedAt = Date.now();
-  console.info(`[EconoSense] ${context.analysisId} ${step}: start`);
+  console.info(`[GovPulse] ${context.analysisId} ${step}: start`);
 
   try {
     const result = await action();
-    console.info(`[EconoSense] ${context.analysisId} ${step}: ok (${Date.now() - startedAt}ms)`);
+    console.info(`[GovPulse] ${context.analysisId} ${step}: ok (${Date.now() - startedAt}ms)`);
     return result;
   } catch (error) {
     const message = errorToMessage(error);
-    console.error(`[EconoSense] ${context.analysisId} ${step}: failed`, error);
+    console.error(`[GovPulse] ${context.analysisId} ${step}: failed`, error);
     context.warnings.push({
       step,
       severity: "error",
-      message: `${step} failed; typed mock fallback was used. ${message}`,
+      message: `${step} failed; source-adapter fallback was used. ${message}`,
       missingData: [message]
     });
 
@@ -1174,7 +1174,7 @@ function createPlannedEvidenceCard(
     title: `${need.source_name} ${mode === "demo" ? "mock" : "planned"} evidence`,
     excerpt:
       mode === "demo"
-        ? `Mock fallback evidence for ${need.query_focus}`
+        ? `Source-adapter fallback evidence for ${need.query_focus}`
         : `Planned evidence retrieval for ${need.query_focus}`,
     extracted_claim: `${need.source_name} should be queried for: ${need.query_focus}`,
     geography: policyAnalysis.jurisdiction,
@@ -1182,7 +1182,7 @@ function createPlannedEvidenceCard(
     confidence: mode === "demo" ? 0.46 : 0.5,
     limitation:
       mode === "demo"
-        ? `Demo placeholder: ${need.source_name} was not queried live.`
+        ? `Sample placeholder: ${need.source_name} was not queried live.`
         : `Adapter placeholder: ${need.source_name} needs source-specific implementation before final claims.`,
     used_by_agents: need.required_for_agents,
     supports: [`data-need:${need.source_name}`],
@@ -1469,7 +1469,7 @@ function buildNotice(mode: AnalyzePolicyMode, warnings: AnalysisWarning[]) {
 
   return mode === "live"
     ? "Live analysis completed with configured sources and typed fallbacks where adapters are not yet implemented."
-    : "Demo analysis completed from typed mock fallback data.";
+    : "Sample analysis completed from source-aware fallback data.";
 }
 
 function defaultCrustDataStatus(stakeholderMap: StakeholderIntelligence): CrustDataStatus {
@@ -1479,7 +1479,7 @@ function defaultCrustDataStatus(stakeholderMap: StakeholderIntelligence): CrustD
     warnings:
       stakeholderMap.dataMode === "live-api"
         ? []
-        : ["CrustData live data was not used; stakeholder intelligence is mock or fallback data."],
+        : ["CrustData live data was not used; stakeholder intelligence used source-adapter fallback data."],
     companiesFound: stakeholderMap.stakeholders.length,
     peopleFound: stakeholderMap.stakeholders.reduce((sum, stakeholder) => sum + stakeholder.relevant_people.length, 0),
     postsFound:

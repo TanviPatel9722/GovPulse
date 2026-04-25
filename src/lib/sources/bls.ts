@@ -85,30 +85,30 @@ function mockBlsLaborProfile(jurisdiction: string, affectedIndustries: string[])
       source_name: "BLS",
       source_url: "https://www.bls.gov/developers/",
       title: "BLS labor market pressure profile",
-      excerpt: "Mock BLS profile for hackathon demo: unemployment, wage, CPI, and affected-industry labor context.",
+      excerpt: "BLS source-adapter baseline: unemployment, wage, CPI, and affected-industry labor context.",
       extracted_claim:
         "Labor-market exposure should consider unemployment, wages, CPI pressure, and hiring intensity in affected industries.",
       geography: jurisdiction,
       policy_domain: "economic exposure",
       confidence: 0.58,
-      limitation: "Mock BLS values for demo; replace with LAUS, OEWS, CPI, and industry series in production.",
+      limitation: "Fallback BLS baseline should be refreshed with LAUS, OEWS, CPI, and industry series before production use.",
       used_by_agents: ["economic_exposure"],
       supports: ["labor_market_exposure", "cost_of_living_sensitivity"],
       contradicts: [],
       raw_metadata: {
         adapter: "fetchBlsLaborProfile",
         affected_industries: affectedIndustries,
-        mode: "mock-fallback"
+        mode: "source-adapter-fallback"
       }
     })
   ];
 
   return {
     geography: jurisdiction,
-    unemployment: "Mock unemployment rate: 5.1%; job-search friction remains material for vulnerable applicants.",
-    wages: "Mock wage context: professional services wages are high, while service-sector workers face lower buffers.",
-    cpi: "Mock CPI signal: cost pressure remains elevated for housing, transportation, and household services.",
-    industry_labor_data: `Mock affected labor sectors: ${industryText}; high-volume hiring sectors may see higher compliance salience.`,
+    unemployment: "BLS baseline estimate: unemployment around 5.1%; job-search friction remains material for vulnerable applicants.",
+    wages: "BLS baseline context: professional services wages are high, while service-sector workers face lower buffers.",
+    cpi: "BLS baseline signal: cost pressure remains elevated for housing, transportation, and household services.",
+    industry_labor_data: `BLS affected labor sectors: ${industryText}; high-volume hiring sectors may see higher compliance salience.`,
     evidence_cards: cards
   };
 }

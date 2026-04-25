@@ -96,7 +96,7 @@ export function ExecutiveMemo({ memo }: { memo: ExecutiveMemoType }) {
 
         <div className="grid gap-3 md:grid-cols-2">
           <div>
-            <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Evidence cards used</div>
+            <div className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Citations used</div>
             <div className="flex flex-wrap gap-2">
               {memo.evidence_card_ids.map((id) => (
                 <Badge key={id} variant="secondary">

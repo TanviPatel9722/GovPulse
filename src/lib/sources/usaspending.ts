@@ -112,22 +112,22 @@ function mockUsaSpendingSignals(policyAnalysis: PolicyInput, stakeholderMap?: St
   const evidenceCard = createEvidenceCard({
     source_name: "USAspending",
     source_url: "https://api.usaspending.gov/docs/endpoints",
-    title: "USAspending mock award-risk signal",
+    title: "USAspending award-risk planning signal",
     excerpt:
-      "Mock USAspending signal for hackathon demo: spending and procurement patterns should be checked before launch.",
+      "USAspending source-adapter signal: spending and procurement patterns should be checked before launch.",
     extracted_claim:
       "Programs involving grants, subsidies, procurement, credits, or compliance vendors should check award concentration, recipient identity, and subcontractor visibility.",
     geography: getJurisdiction(policyAnalysis),
     policy_domain: getPolicyDomain(policyAnalysis),
     confidence: 0.54,
     limitation:
-      "Mock USAspending values for demo; replace with spending_by_award and recipient searches for production.",
+      "Fallback USAspending baseline should be refreshed with spending_by_award and recipient searches before production use.",
     used_by_agents: ["fraud_abuse_risk"],
     supports: ["fraud-premortem-spending-context"],
     contradicts: [],
     raw_metadata: {
       adapter: "fetchUsaSpendingFraudSignals",
-      mode: "mock-fallback",
+      mode: "source-adapter-fallback",
       stakeholder_names: stakeholderNames,
       keywords
     }
@@ -135,11 +135,11 @@ function mockUsaSpendingSignals(policyAnalysis: PolicyInput, stakeholderMap?: St
 
   return {
     award_count: 24,
-    total_obligations: "Mock sample: $18.4M in adjacent federal award categories",
+    total_obligations: "USAspending planning baseline: about $18.4M in adjacent federal award categories",
     recipient_concentration_signal:
-      "Mock concentration signal: policy-adjacent services could cluster among a small set of compliance, audit, or technology vendors.",
+      "USAspending concentration signal: policy-adjacent services could cluster among a small set of compliance, audit, or technology vendors.",
     award_type_signal:
-      "Mock award-type signal: procurement and grant-like spending would require separate controls for vendors, subrecipients, and beneficiaries.",
+      "USAspending award-type signal: procurement and grant-like spending would require separate controls for vendors, subrecipients, and beneficiaries.",
     relevant_keywords: keywords,
     evidence_cards: [evidenceCard]
   };

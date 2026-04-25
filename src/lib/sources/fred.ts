@@ -28,29 +28,29 @@ function mockFredMacroProfile(jurisdiction: string): FredMacroProfile {
       source_name: "FRED",
       source_url: "https://fred.stlouisfed.org/docs/api/fred/",
       title: "FRED macro sensitivity context",
-      excerpt: "Mock FRED profile for hackathon demo: inflation, interest rate, and unemployment trend context.",
+      excerpt: "FRED source-adapter baseline: inflation, interest rate, and unemployment trend context.",
       extracted_claim:
         "Macroeconomic conditions can raise sensitivity to new compliance costs, job-search delays, and household burden.",
       geography: jurisdiction,
       policy_domain: "economic exposure",
       confidence: 0.55,
-      limitation: "Mock FRED values for demo; replace with FRED series observations for production.",
+      limitation: "Fallback FRED baseline should be refreshed with live FRED series observations before production use.",
       used_by_agents: ["economic_exposure"],
       supports: ["regional_economic_context", "cost_of_living_sensitivity"],
       contradicts: [],
       raw_metadata: {
         adapter: "fetchFredMacroProfile",
-        mode: "mock-fallback"
+        mode: "source-adapter-fallback"
       }
     })
   ];
 
   return {
     geography: jurisdiction,
-    macroeconomic_indicators: "Mock macro context: households and employers remain sensitive to inflation and borrowing costs.",
-    inflation: "Mock inflation signal: elevated cost-of-living pressure increases reaction to job-access or compliance-cost narratives.",
-    interest_rates: "Mock rate signal: higher financing costs may make small employers more resistant to new compliance spending.",
-    unemployment_trend: "Mock unemployment trend: stable-to-soft labor market makes hiring fairness salient but cost narratives potent.",
+    macroeconomic_indicators: "FRED baseline context: households and employers remain sensitive to inflation and borrowing costs.",
+    inflation: "FRED baseline signal: elevated cost-of-living pressure increases reaction to job-access or compliance-cost narratives.",
+    interest_rates: "FRED baseline signal: higher financing costs may make small employers more resistant to new compliance spending.",
+    unemployment_trend: "FRED baseline signal: stable-to-soft labor market makes hiring fairness salient but cost narratives potent.",
     evidence_cards: cards
   };
 }

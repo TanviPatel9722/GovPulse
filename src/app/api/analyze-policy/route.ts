@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       missingData: [message]
     };
 
-    console.error("[EconoSense] analyze-policy endpoint failed", error);
+    console.error("[GovPulse] analyze-policy endpoint failed", error);
 
     return NextResponse.json(
       {
@@ -44,6 +44,6 @@ export async function GET() {
   return NextResponse.json({
     ok: true,
     analysis,
-    notice: "Demo analysis generated from typed mock fallback data."
+    notice: "Sample analysis generated with source-aware fallback data."
   });
 }

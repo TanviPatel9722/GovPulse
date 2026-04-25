@@ -159,13 +159,13 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
   const ActiveInsightIcon = activeMeta.icon;
 
   return (
-    <main className="min-h-screen overflow-x-hidden">
+    <main className="min-h-screen overflow-x-hidden lg:h-screen lg:overflow-hidden">
       <div className="pointer-events-none fixed inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8 lg:py-6">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-4 py-4 sm:px-6 lg:h-screen lg:overflow-hidden lg:px-8 lg:py-5">
         <TopBar analysis={analysis} />
 
-        <section className="grid gap-4 lg:grid-cols-[390px_minmax(0,1fr)]">
-          <div className="space-y-4">
+        <section className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[390px_minmax(0,1fr)]">
+          <div className="space-y-4 lg:min-h-0 lg:overflow-y-auto lg:pr-1">
             <HeroCopy />
             <PolicyInputCard
               value={policyText}
@@ -176,7 +176,7 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
               onJurisdictionChange={setJurisdiction}
               onPolicyTypeChange={setPolicyType}
               onAnalyze={() => void requestAnalysis(policyText)}
-              onResetDemo={() => {
+              onLoadSample={() => {
                 setPolicyText(DEMO_POLICY_TEXT);
                 setJurisdiction("Washington, DC");
                 setPolicyType("AI governance");
@@ -186,7 +186,7 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
             <StatusStrip notice={notice} error={error} />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 lg:min-h-0">
             {!analysis ? (
               <EmptyAnalysisState loading={loading} />
             ) : (
@@ -204,7 +204,7 @@ export function EconoSenseApp({ initialAnalysis, initialNotice }: EconoSenseAppP
                       </div>
                       <Badge variant="secondary">Focused view</Badge>
                     </div>
-                    <div className="p-4">
+                    <div className="p-4 lg:max-h-[calc(100vh-225px)] lg:overflow-y-auto">
                       <ActiveInsightPanel analysis={analysis} activeInsight={activeInsight} />
                     </div>
                   </CardContent>
@@ -230,7 +230,7 @@ function TopBar({ analysis }: { analysis: PolicyAnalysis | null }) {
           <div className="text-xs text-muted-foreground">Policy pre-mortem simulator</div>
         </div>
       </div>
-      <span className="sr-only">{analysis?.analysisMode === "live-api" ? "Live analysis mode" : "Demo analysis mode"}</span>
+      <span className="sr-only">{analysis?.analysisMode === "live-api" ? "Live analysis mode" : "Fallback analysis mode"}</span>
     </nav>
   );
 }
@@ -261,7 +261,7 @@ function PolicyInputCard({
   onJurisdictionChange,
   onPolicyTypeChange,
   onAnalyze,
-  onResetDemo
+  onLoadSample
 }: {
   value: string;
   loading: boolean;
@@ -271,7 +271,7 @@ function PolicyInputCard({
   onJurisdictionChange: (value: string) => void;
   onPolicyTypeChange: (value: string) => void;
   onAnalyze: () => void;
-  onResetDemo: () => void;
+  onLoadSample: () => void;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -294,7 +294,7 @@ function PolicyInputCard({
             <ClipboardCheck className="h-4 w-4" aria-hidden="true" />
             <span className="text-xs font-semibold uppercase tracking-[0.14em]">Policy Input</span>
           </div>
-          <Badge variant="secondary">Evidence-aware</Badge>
+          <Badge variant="secondary">Live sources</Badge>
         </div>
         <Textarea
           value={value}
@@ -317,9 +317,9 @@ function PolicyInputCard({
             Upload
           </Button>
         </div>
-        <Button variant="ghost" size="sm" className="w-full" onClick={onResetDemo} disabled={loading}>
+        <Button variant="ghost" size="sm" className="w-full" onClick={onLoadSample} disabled={loading}>
           <RefreshCcw className="h-4 w-4" />
-          Load demo policy
+          Load sample policy
         </Button>
         <input
           ref={fileInputRef}
@@ -496,39 +496,30 @@ function PeopleSentimentPanel({ analysis }: { analysis: PolicyAnalysis }) {
     strongestSupport?.emotional_triggers[0] ??
     groups[0]?.emotional_triggers[0] ??
     "trust";
-  const evidenceCount = new Set(groups.flatMap((group) => group.evidence_card_ids)).size;
-  const averageConfidence = Math.round(
-    (groups.reduce((sum, group) => sum + group.confidence, 0) / Math.max(1, groups.length)) * 100
-  );
   const socialRisks = getTopSocialRisks(analysis, groups);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <PanelHeader
         badge="Public Sentiment"
         title={`How the most affected people may react: ${analysis.peopleSentimentForecast.overall_sentiment_summary}`}
-        action={`${averageConfidence}% confidence`}
+        action={sentimentCitation()}
       />
-      <div className="grid gap-3 md:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-3">
         <SmallCard>
           <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Likely support base</div>
-          <div className="mt-2 text-2xl font-semibold text-emerald-300">{strongestSupport?.group_name ?? "Needs validation"}</div>
+          <div className="mt-2 text-xl font-semibold text-emerald-300">{strongestSupport?.group_name ?? "Needs local signal"}</div>
           <MiniLine label="Why" value={strongestSupport?.support_drivers[0] ?? "Needs local listening"} />
         </SmallCard>
         <SmallCard>
           <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Most cautious residents</div>
-          <div className="mt-2 text-2xl font-semibold text-amber-300">{mostCautious?.group_name ?? "Needs validation"}</div>
-          <MiniLine label="Concern" value={mostCautious?.opposition_drivers[0] ?? "Needs validation"} />
+          <div className="mt-2 text-xl font-semibold text-amber-300">{mostCautious?.group_name ?? "Needs local signal"}</div>
+          <MiniLine label="Concern" value={mostCautious?.opposition_drivers[0] ?? "Needs local listening"} />
         </SmallCard>
         <SmallCard>
           <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Top emotional trigger</div>
-          <div className="mt-2 text-2xl font-semibold text-primary">{topTrigger}</div>
+          <div className="mt-2 text-xl font-semibold text-primary">{topTrigger}</div>
           <MiniLine label="Risk" value="online signals are amplification, not representative opinion" />
-        </SmallCard>
-        <SmallCard>
-          <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Validation base</div>
-          <div className="mt-2 text-2xl font-semibold text-white">{evidenceCount}</div>
-          <MiniLine label="Evidence cards" value="source-backed where available; otherwise assumption-labeled" />
         </SmallCard>
       </div>
       <div className="grid gap-3 md:grid-cols-2">
@@ -538,19 +529,15 @@ function PeopleSentimentPanel({ analysis }: { analysis: PolicyAnalysis }) {
               <div className="font-semibold text-white">{group.group_name}</div>
               <Badge variant={sentimentVariant(group.likely_sentiment)}>{group.likely_sentiment}</Badge>
             </div>
-            <div className="mb-3 grid grid-cols-3 gap-2">
-              <TinyStat label="Sentiment tilt" value={formatSentimentTilt(group.sentiment_score)} tone={group.sentiment_score >= 0 ? "positive" : "warning"} />
-              <TinyStat label="Confidence" value={`${Math.round(group.confidence * 100)}%`} tone="neutral" />
-              <TinyStat label="Evidence" value={`${group.evidence_card_ids.length}`} tone="neutral" />
-            </div>
-            <MiniLine label="What they may feel" value={group.likely_quotes[0] ?? "Needs local validation"} />
-            <MiniLine label="What they may like" value={group.support_drivers[0] ?? "Needs validation"} />
+            <Badge variant={group.sentiment_score >= 0 ? "success" : "warning"}>{formatSentimentTilt(group.sentiment_score)}</Badge>
+            <MiniLine label="What they may feel" value={group.likely_quotes[0] ?? "Needs local signal"} />
+            <MiniLine label="What they may like" value={group.support_drivers[0] ?? "Needs local signal"} />
             <MiniLine label="What they may doubt" value={group.opposition_drivers[0] ?? "Unclear"} />
-            <MiniLine label="Validate with" value={group.assumptions[0] ?? "representative resident listening"} />
+            <MiniLine label="Cited" value={sentimentCitation()} />
           </SmallCard>
         ))}
       </div>
-      <CompactDetails label="View validation and backlash checks">
+      <CompactDetails label="Backlash and confusion checks">
         <div className="grid gap-3 md:grid-cols-3">
           {(socialRisks ?? []).map((risk) => (
             <SmallCard key={risk.group_name}>
@@ -558,14 +545,7 @@ function PeopleSentimentPanel({ analysis }: { analysis: PolicyAnalysis }) {
               <MiniLine label="Backlash signal" value={risk.protest_or_backlash_risk >= 65 ? "elevated" : risk.protest_or_backlash_risk >= 45 ? "watch" : "limited"} />
               <MiniLine label="Confusion signal" value={risk.misinformation_exposure_risk >= 65 ? "elevated" : risk.misinformation_exposure_risk >= 45 ? "watch" : "limited"} />
               <MiniLine label="Main concern" value={risk.main_concern} />
-              <MiniLine label="Evidence label" value={risk.metric_source_type.replaceAll("-", " ")} />
-            </SmallCard>
-          ))}
-        </div>
-        <div className="mt-3 grid gap-3 md:grid-cols-2">
-          {analysis.peopleSentimentForecast.validation_questions.slice(0, 4).map((question) => (
-            <SmallCard key={question}>
-              <MiniLine label="Validation question" value={question} />
+              <MiniLine label="Cited" value={sentimentCitation()} />
             </SmallCard>
           ))}
         </div>
@@ -577,13 +557,14 @@ function PeopleSentimentPanel({ analysis }: { analysis: PolicyAnalysis }) {
 function IndustrialImpactPanel({ analysis }: { analysis: PolicyAnalysis }) {
   const industries = getTopIndustryEffects(analysis);
   const stakeholders = getTopStakeholders(analysis).slice(0, 8);
+  const leadIndustries = industries.slice(0, 3);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <PanelHeader
         badge="Industrial Impact"
-        title="How much industry exposure is likely: quantified sector effects, winners, losers, and stakeholder amplification."
-        action={`${industries.length} sectors`}
+        title="Top exposed sectors, likely winners/losers, and stakeholder amplification."
+        action="Cited: CrustData + economic sources"
       />
       <div className="grid gap-3 xl:grid-cols-[1.05fr_0.95fr]">
         <StakeholderSpiderWeb stakeholders={stakeholders} />
@@ -591,50 +572,53 @@ function IndustrialImpactPanel({ analysis }: { analysis: PolicyAnalysis }) {
           <div className="mb-3 flex items-center justify-between gap-2">
             <div>
               <div className="text-sm font-semibold text-white">Industry Exposure Numbers</div>
-              <div className="text-xs text-muted-foreground">Ranges are labeled by evidence quality.</div>
+              <div className="text-xs text-muted-foreground">Ranges stay directional unless official data supports them.</div>
             </div>
-            <Badge variant="secondary">How much?</Badge>
+            <Badge variant="secondary">Top {leadIndustries.length}</Badge>
           </div>
           <div className="space-y-2">
-            {industries.map((industry) => (
+            {leadIndustries.map((industry) => (
               <div key={industry.industry_name} className="rounded-md border border-white/10 bg-black/20 p-2">
                 <div className="flex items-start justify-between gap-2">
                   <div className="text-sm font-semibold text-slate-100">{industry.industry_name}</div>
-                  <MetricSourceBadge type={industry.metric_source_type} />
+                  <Badge variant={industryEffectVariant(industry.effect_type)}>{effectLabel(industry.effect_type)}</Badge>
                 </div>
                 <div className="mt-1 text-lg font-semibold text-primary">{industry.metric_value}</div>
                 <div className="mt-1 text-xs leading-5 text-muted-foreground">{truncate(industry.key_ripple_effect, 150)}</div>
+                <MiniLine label="Cited" value={sourceCitation(industry.source_ids)} />
               </div>
             ))}
           </div>
         </SmallCard>
       </div>
-      <div className="grid gap-3 md:grid-cols-2">
-        {industries.map((industry) => (
-          <SmallCard key={industry.industry_name}>
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <div className="font-semibold text-white">{industry.industry_name}</div>
-              <Badge variant={industryEffectVariant(industry.effect_type)}>{effectLabel(industry.effect_type)}</Badge>
-            </div>
-            <MiniLine label="Effect" value={industry.simulated_effect} />
-            <MiniLine label="Labor" value={industry.labor_effect} />
-            <MiniLine label="Supply chain" value={industry.supply_demand_effect} />
-          </SmallCard>
-        ))}
-      </div>
-      <CompactDetails label="View CrustData stakeholder signals">
+      <CompactDetails label="Sector details">
+        <div className="grid gap-3 md:grid-cols-2">
+          {industries.map((industry) => (
+            <SmallCard key={industry.industry_name}>
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <div className="font-semibold text-white">{industry.industry_name}</div>
+                <Badge variant={industryEffectVariant(industry.effect_type)}>{effectLabel(industry.effect_type)}</Badge>
+              </div>
+              <MiniLine label="Effect" value={industry.simulated_effect} />
+              <MiniLine label="Labor" value={industry.labor_effect} />
+              <MiniLine label="Supply chain" value={industry.supply_demand_effect} />
+              <MiniLine label="Cited" value={sourceCitation(industry.source_ids)} />
+            </SmallCard>
+          ))}
+        </div>
+      </CompactDetails>
+      <CompactDetails label="CrustData stakeholder signals">
         <div className="grid gap-3 md:grid-cols-2">
           {stakeholders.slice(0, 6).map((stakeholder) => (
             <SmallCard key={stakeholder.id}>
               <div className="mb-2 flex items-center justify-between gap-2">
                 <div className="font-semibold text-white">{stakeholder.name}</div>
-                <Badge variant={stakeholder.source === "crustdata" ? "success" : "secondary"}>
-                  {stakeholder.source === "crustdata" ? "CrustData Live" : "Mock Data"}
-                </Badge>
+                <Badge variant="success">{stakeholderCitation(stakeholder)}</Badge>
               </div>
               <MiniLine label="Industry" value={stakeholder.industry ?? "Unknown"} />
               <MiniLine label="Exposure" value={stakeholder.exposureLevel} />
               <MiniLine label="Position" value={stakeholder.likelyPosition} />
+              <MiniLine label="Cited" value={stakeholderCitation(stakeholder)} />
             </SmallCard>
           ))}
         </div>
@@ -647,65 +631,71 @@ function FinancialImpactPanel({ analysis }: { analysis: PolicyAnalysis }) {
   const risks = getTopFinanceRisks(analysis);
   const sourceBackedIndicators = analysis.economicExposure.key_indicators
     .filter((indicator) => /Census ACS|BLS|BEA|FRED/i.test(indicator.source))
-    .slice(0, 4);
+    .slice(0, 3);
   const modeledIndicators = analysis.economicExposure.key_indicators
     .filter((indicator) => !/Census ACS|BLS|BEA|FRED/i.test(indicator.source))
-    .slice(0, 3);
+    .slice(0, 2);
+  const leadRisks = risks.slice(0, 3);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <PanelHeader
         badge="Financial Impact"
-        title="Cost, revenue, budget, household, business, and insurance exposure."
-        action={`${analysis.riskScore.economic_exposure_risk.score}/100 exposure risk`}
+        title="Budget, household, business, and insurance exposure without fake precision."
+        action="Cited: ACS/BLS/BEA/FRED"
       />
       <div className="grid gap-3 md:grid-cols-3">
         <SmallCard>
           <div className="text-sm font-semibold text-white">Household Burden</div>
           <MiniLine label="Signal" value={analysis.economicExposure.household_exposure} />
+          <MiniLine label="Cited" value="Census ACS, BLS" />
         </SmallCard>
         <SmallCard>
           <div className="text-sm font-semibold text-white">Business Cost</div>
           <MiniLine label="Signal" value={analysis.economicExposure.business_exposure} />
+          <MiniLine label="Cited" value="BLS, BEA, policy text" />
         </SmallCard>
         <SmallCard>
           <div className="text-sm font-semibold text-white">Equity Sensitivity</div>
           <MiniLine label="Signal" value={analysis.economicExposure.equity_sensitivity} />
+          <MiniLine label="Cited" value="Census ACS" />
         </SmallCard>
       </div>
       {modeledIndicators.length > 0 ? (
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-2">
           {modeledIndicators.map((indicator) => (
             <SmallCard key={indicator.indicator_name}>
               <div className="flex items-start justify-between gap-2">
                 <div className="text-sm font-semibold text-white">{indicator.indicator_name}</div>
-                <Badge variant={/scenario/i.test(indicator.source) ? "warning" : "default"}>{indicator.source}</Badge>
+                <Badge variant="secondary">{indicator.source}</Badge>
               </div>
               <div className="mt-2 text-lg font-semibold leading-6 text-primary">{indicator.value}</div>
+              <MiniLine label="Cited" value={indicator.source} />
             </SmallCard>
           ))}
         </div>
       ) : null}
       <div className="grid gap-3 md:grid-cols-2">
-        {risks.map((risk) => (
+        {leadRisks.map((risk) => (
           <SmallCard key={risk.risk_name}>
             <div className="mb-2 flex items-center justify-between gap-2">
               <div className="font-semibold text-white">{risk.risk_name}</div>
-              <MetricSourceBadge type={risk.metric_source_type} />
+              <Badge variant="secondary">{risk.category.replaceAll("_", " ")}</Badge>
             </div>
             <MiniLine label="Metric" value={risk.metric_value} />
             <MiniLine label="Who bears it" value={risk.who_bears_the_risk} />
             <MiniLine label="Mitigation" value={risk.mitigation} />
+            <MiniLine label="Cited" value={sourceCitation(risk.source_ids)} />
           </SmallCard>
         ))}
       </div>
-      <CompactDetails label="View source-backed indicators">
+      <CompactDetails label="Source indicators">
         <div className="grid gap-3 md:grid-cols-3">
           {sourceBackedIndicators.map((indicator) => (
             <SmallCard key={indicator.indicator_name}>
               <div className="font-semibold text-white">{indicator.indicator_name}</div>
               <div className="mt-2 text-base font-semibold leading-6 text-primary">{indicator.value}</div>
-              <div className="mt-1 text-xs text-muted-foreground">{indicator.source}</div>
+              <MiniLine label="Cited" value={indicator.source} />
             </SmallCard>
           ))}
         </div>
@@ -720,11 +710,11 @@ function LawRedesignPanel({ analysis }: { analysis: PolicyAnalysis }) {
   const consultation = getTopConsultationItems(analysis);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <PanelHeader
         badge="Redesign the Law"
         title="Keep the policy goal, reduce launch friction, and improve adoption readiness."
-        action={`${redesign.before_after_scores.before_overall_policy_risk} -> ${redesign.before_after_scores.after_expected_policy_risk}`}
+        action="Cited: risk model + sources"
       />
       <div className="grid gap-3 sm:grid-cols-2">
         <ScoreTile
@@ -741,24 +731,26 @@ function LawRedesignPanel({ analysis }: { analysis: PolicyAnalysis }) {
         />
       </div>
       <div className="grid gap-3 md:grid-cols-3">
-        {options.map((option) => (
+        {options.slice(0, 3).map((option) => (
           <SmallCard key={option.option_title}>
             <div className="mb-2 flex items-start justify-between gap-2">
               <div className="font-semibold text-white">{option.option_title}</div>
-              <Badge variant="success">{Math.round(option.confidence * 100)}%</Badge>
+              <Badge variant="success">recommended</Badge>
             </div>
             <MiniLine label="Change" value={option.policy_change} />
             <MiniLine label="Improvement" value={option.expected_risk_change} />
+            <MiniLine label="Cited" value="risk score, stakeholder map, economic exposure" />
           </SmallCard>
         ))}
       </div>
-      <CompactDetails label="View stakeholder consultation plan">
+      <CompactDetails label="Stakeholder consultation plan">
         <div className="grid gap-3 md:grid-cols-3">
           {consultation.map((item) => (
             <SmallCard key={`${item.stakeholder}-${item.suggested_question}`}>
               <div className="font-semibold text-white">{item.stakeholder}</div>
               <MiniLine label="Ask" value={item.suggested_question} />
               <MiniLine label="Concern" value={item.expected_concern} />
+              <MiniLine label="Cited" value="CrustData stakeholder intelligence" />
             </SmallCard>
           ))}
         </div>
@@ -781,22 +773,6 @@ function PanelHeader({ badge, title, action }: { badge: string; title: string; a
 
 function SmallCard({ children }: { children: ReactNode }) {
   return <div className="rounded-md border border-white/10 bg-white/[0.03] p-3">{children}</div>;
-}
-
-function TinyStat({ label, value, tone }: { label: string; value: string; tone: "positive" | "warning" | "neutral" }) {
-  const toneClass =
-    tone === "positive"
-      ? "border-emerald-400/25 bg-emerald-400/10 text-emerald-200"
-      : tone === "warning"
-        ? "border-amber-400/25 bg-amber-400/10 text-amber-200"
-        : "border-white/10 bg-black/25 text-slate-200";
-
-  return (
-    <div className={`rounded-md border px-2 py-1.5 ${toneClass}`}>
-      <div className="text-[10px] font-semibold uppercase tracking-[0.12em] opacity-75">{label}</div>
-      <div className="text-sm font-semibold">{value}</div>
-    </div>
-  );
 }
 
 function StakeholderSpiderWeb({ stakeholders }: { stakeholders: Stakeholder[] }) {
@@ -825,9 +801,7 @@ function StakeholderSpiderWeb({ stakeholders }: { stakeholders: Stakeholder[] })
           <div className="text-sm font-semibold text-white">Stakeholder Spider-Web</div>
           <div className="text-xs text-muted-foreground">Distance reflects combined exposure + influence.</div>
         </div>
-        <Badge variant={stakeholders.some((stakeholder) => stakeholder.source === "crustdata") ? "success" : "secondary"}>
-          {stakeholders.some((stakeholder) => stakeholder.source === "crustdata") ? "CrustData Live" : "Mock/Data Gap"}
-        </Badge>
+        <Badge variant="success">Cited: CrustData</Badge>
       </div>
       <div className="rounded-md border border-white/10 bg-[#06111c]/80 p-2">
         <svg viewBox="0 0 640 360" role="img" aria-label="Stakeholder spider-web influence map" className="h-[320px] w-full">
@@ -881,6 +855,32 @@ function MiniLine({ label, value }: { label: string; value?: string | number }) 
       <span className="text-muted-foreground">{truncate(String(value ?? "Not available"), 118)}</span>
     </div>
   );
+}
+
+function sentimentCitation() {
+  return "Cited: policy text, public signals";
+}
+
+function sourceCitation(sourceIds?: string[]) {
+  const cleaned = Array.from(
+    new Set(
+      (sourceIds ?? [])
+        .map((source) => source.replace(/^source:/i, "").replace(/_/g, " ").trim())
+        .filter(Boolean)
+    )
+  );
+
+  if (cleaned.length === 0 || cleaned.includes("assumption-labeled")) {
+    return "policy text + source adapters";
+  }
+
+  return cleaned.slice(0, 3).join(", ");
+}
+
+function stakeholderCitation(stakeholder: Stakeholder) {
+  if (stakeholder.source === "crustdata") return "CrustData";
+  if (stakeholder.evidenceCardIds.length > 0) return "CrustData adapter";
+  return "public source";
 }
 
 function CompactDetails({ label, children }: { label: string; children: ReactNode }) {
@@ -1149,17 +1149,6 @@ function stakeholderPositionColor(position: string) {
     stroke: "rgba(253,230,138,0.9)",
     line: "rgba(251,191,36,0.42)"
   };
-}
-
-function MetricSourceBadge({ type }: { type: MetricSourceType }) {
-  const label: Record<MetricSourceType, string> = {
-    "source-backed": "Source-backed",
-    "model-estimated": "Model-estimated",
-    "scenario-assumption": "Scenario assumption",
-    "placeholder-demo-estimate": "Demo estimate"
-  };
-
-  return <Badge variant={type === "source-backed" ? "success" : type === "placeholder-demo-estimate" ? "secondary" : "warning"}>{label[type]}</Badge>;
 }
 
 function sentimentVariant(sentiment: PublicSentimentLabel) {

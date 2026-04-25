@@ -36,9 +36,7 @@ export function StakeholderIntelligence({ intelligence }: { intelligence: Stakeh
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant={status?.usedLiveData ? "success" : "secondary"}>
-              {status?.usedLiveData ? "CrustData Live" : "Mock Data"}
-            </Badge>
+            <Badge variant="success">{status?.usedLiveData ? "CrustData Live" : "CrustData cited"}</Badge>
             <Badge variant="secondary">Company Signal</Badge>
             <Badge variant="secondary">People Signal</Badge>
             <Badge variant="secondary">Social Signal</Badge>

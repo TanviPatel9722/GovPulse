@@ -7,7 +7,7 @@ export default async function Home() {
     policyText: DEMO_POLICY_TEXT,
     jurisdiction: "Washington, DC",
     policyCategory: "AI governance",
-    mode: "demo"
+    mode: "live"
   });
 
   return (

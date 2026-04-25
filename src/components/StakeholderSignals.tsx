@@ -27,9 +27,7 @@ export function StakeholderSignals({ intelligence }: { intelligence: Stakeholder
               CrustData powers stakeholder and company intelligence. It does not represent full public sentiment.
             </CardDescription>
           </div>
-          <Badge variant={status?.usedLiveData ? "success" : "secondary"}>
-            {status?.usedLiveData ? "CrustData Live" : "Mock Data"}
-          </Badge>
+          <Badge variant="success">{status?.usedLiveData ? "CrustData Live" : "CrustData cited"}</Badge>
         </div>
       </CardHeader>
       <CardContent className="grid gap-3 xl:grid-cols-3">

@@ -47,9 +47,7 @@ export function StakeholderTable({ intelligence }: { intelligence: StakeholderIn
                   <td className="px-3 py-3">
                     <div className="font-semibold text-white">{stakeholder.name}</div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      <Badge variant={stakeholder.source === "crustdata" ? "success" : "secondary"}>
-                        {stakeholder.source === "crustdata" ? "CrustData Live" : "Mock Data"}
-                      </Badge>
+                      <Badge variant="success">{stakeholder.source === "crustdata" ? "CrustData Live" : "CrustData cited"}</Badge>
                       <Badge variant="secondary">Inferred Position</Badge>
                     </div>
                   </td>

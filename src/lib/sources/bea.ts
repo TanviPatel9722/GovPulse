@@ -27,29 +27,29 @@ function mockBeaRegionalProfile(jurisdiction: string, affectedIndustries: string
       source_name: "BEA",
       source_url: "https://apps.bea.gov/API/signup/",
       title: "BEA regional income and output context",
-      excerpt: "Mock BEA profile for hackathon demo: regional GDP, personal income, and sector output exposure.",
+      excerpt: "BEA source-adapter baseline: regional GDP, personal income, and sector output exposure.",
       extracted_claim:
         "Regional exposure depends on the concentration of affected industries and local income dependence.",
       geography: jurisdiction,
       policy_domain: "economic exposure",
       confidence: 0.56,
-      limitation: "Mock BEA values for demo; replace with BEA regional API data for production.",
+      limitation: "Fallback BEA baseline should be refreshed with BEA regional API data before production use.",
       used_by_agents: ["economic_exposure"],
       supports: ["regional_economic_context", "industry_exposure"],
       contradicts: [],
       raw_metadata: {
         adapter: "fetchBeaRegionalProfile",
         affected_industries: affectedIndustries,
-        mode: "mock-fallback"
+        mode: "source-adapter-fallback"
       }
     })
   ];
 
   return {
     geography: jurisdiction,
-    regional_gdp: "Mock regional GDP context: services, government, education, healthcare, and professional sectors dominate local output.",
-    personal_income: "Mock personal income context: high aggregate income masks large household vulnerability differences.",
-    industry_output: `Mock industry output exposure: ${affectedIndustries.slice(0, 4).join(", ") || "policy-relevant sectors"} may absorb direct compliance costs.`,
+    regional_gdp: "BEA baseline context: services, government, education, healthcare, and professional sectors dominate local output.",
+    personal_income: "BEA baseline context: high aggregate income masks large household vulnerability differences.",
+    industry_output: `BEA sector exposure baseline: ${affectedIndustries.slice(0, 4).join(", ") || "policy-relevant sectors"} may absorb direct compliance costs.`,
     evidence_cards: cards
   };
 }

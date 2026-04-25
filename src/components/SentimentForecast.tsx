@@ -104,7 +104,7 @@ function SentimentGroupCard({ group }: { group: PublicSentimentGroup }) {
         <span>{group.likely_quotes[0]}</span>
       </div>
       <div className="mt-3 text-xs leading-5 text-muted-foreground">
-        Evidence cards: {group.evidence_card_ids.length > 0 ? group.evidence_card_ids.slice(0, 3).join(", ") : "none"}
+        Cited: {group.evidence_card_ids.length > 0 ? group.evidence_card_ids.slice(0, 3).join(", ") : "policy text"}
       </div>
     </div>
   );

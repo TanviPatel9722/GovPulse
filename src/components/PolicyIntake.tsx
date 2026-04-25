@@ -16,7 +16,7 @@ interface PolicyIntakeProps {
   onJurisdictionChange: (value: string) => void;
   onPolicyTypeChange: (value: string) => void;
   onAnalyze: () => void;
-  onResetDemo: () => void;
+  onLoadSample: () => void;
 }
 
 const jurisdictions = [
@@ -50,7 +50,7 @@ export function PolicyIntake({
   onJurisdictionChange,
   onPolicyTypeChange,
   onAnalyze,
-  onResetDemo
+  onLoadSample
 }: PolicyIntakeProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -76,7 +76,7 @@ export function PolicyIntake({
           <span className="text-xs font-semibold uppercase tracking-[0.18em]">Policy Intake</span>
         </div>
         <CardTitle className="text-xl">Paste or upload policy</CardTitle>
-        <CardDescription>Scenario forecast inputs for a full policy impact brief.</CardDescription>
+        <CardDescription>Policy inputs for a focused impact brief.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <Textarea
@@ -134,9 +134,9 @@ export function PolicyIntake({
         </div>
 
         <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline" onClick={onResetDemo} disabled={loading}>
+          <Button variant="outline" onClick={onLoadSample} disabled={loading}>
             <RotateCcw className="h-4 w-4" />
-            Demo policy
+            Sample policy
           </Button>
           <div className="flex items-center gap-2 rounded-md border border-white/10 bg-black/20 px-3 text-xs text-muted-foreground">
             <FileUp className="h-4 w-4 text-primary" aria-hidden="true" />

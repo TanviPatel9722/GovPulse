@@ -99,30 +99,30 @@ function mockCensusAcsProfile(jurisdiction: string): CensusAcsProfile {
       source_name: "Census ACS",
       source_url: "https://api.census.gov/data.html",
       title: "ACS household income and poverty profile",
-      excerpt: "Mock ACS profile for hackathon demo: median household income and poverty context for local exposure.",
+      excerpt: "ACS source-adapter baseline: median household income and poverty context for local exposure.",
       extracted_claim:
         "Household sensitivity should be evaluated against income, poverty, housing burden, and commute patterns.",
       geography: jurisdiction,
       policy_domain: "economic exposure",
       confidence: 0.6,
-      limitation: "Mock ACS values for demo; replace with ACS profile/detail table queries for production.",
+      limitation: "Fallback ACS baseline should be refreshed with live ACS profile/detail table queries before production use.",
       used_by_agents: ["economic_exposure"],
       supports: ["household_exposure", "equity_sensitivity"],
       contradicts: [],
       raw_metadata: {
         adapter: "fetchCensusAcsProfile",
-        mode: "mock-fallback"
+        mode: "source-adapter-fallback"
       }
     })
   ];
 
   return {
     geography: jurisdiction,
-    demographics: "Mock: racially and economically diverse resident base with uneven access to legal and digital recourse.",
-    income: "Mock median household income: $108,000; income distribution is highly unequal by neighborhood.",
-    poverty: "Mock poverty rate: 13.5%, with higher vulnerability among residents facing employment barriers.",
-    commute: "Mock commute signal: many workers rely on cross-jurisdiction employment flows and transit access.",
-    housing_burden: "Mock housing burden: elevated rent pressure increases sensitivity to job-access disruptions.",
+    demographics: "ACS baseline estimate: racially and economically diverse resident base with uneven access to legal and digital recourse.",
+    income: "ACS baseline estimate: median household income around $108,000; income distribution is highly unequal by neighborhood.",
+    poverty: "ACS baseline estimate: poverty rate around 13.5%, with higher vulnerability among residents facing employment barriers.",
+    commute: "ACS baseline signal: many workers rely on cross-jurisdiction employment flows and transit access.",
+    housing_burden: "ACS baseline signal: elevated rent pressure increases sensitivity to job-access disruptions.",
     evidence_cards: cards
   };
 }

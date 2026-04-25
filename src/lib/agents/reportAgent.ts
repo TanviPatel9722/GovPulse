@@ -180,9 +180,9 @@ export function generateExecutiveMemo(input: ExecutiveMemoInput): ExecutiveMemo 
     evidence_and_assumptions: section({
       heading: "11. Evidence and Assumptions",
       summary:
-        "This memo uses evidence cards where available and labels assumptions where live data, representative listening, or final rule text is missing.",
+        "This memo uses citations where available and labels assumptions where live data, representative listening, or final rule text is missing.",
       bullets: [
-        `${evidenceCardIds.length} evidence card IDs are attached across stakeholder, economic, fraud, and sentiment sections.`,
+        `${evidenceCardIds.length} citation IDs are attached across stakeholder, economic, fraud, and sentiment sections.`,
         `Overall risk score: ${input.riskScore.overall_policy_risk.score}/100 (${input.riskScore.overall_policy_risk.band}).`,
         `Recommendation: ${recommendation}.`,
         ...input.riskScore.assumptions.slice(0, 3)
@@ -190,7 +190,7 @@ export function generateExecutiveMemo(input: ExecutiveMemoInput): ExecutiveMemo 
       evidence_card_ids: evidenceCardIds,
       confidence: input.riskScore.confidence,
       assumptions: [
-        "Mock fallback data should be replaced with live source adapters before final launch decisions.",
+        "Source-adapter fallback data should be refreshed with live source connectors before final launch decisions.",
         "The memo forecasts likely scenarios, not certain outcomes."
       ]
     })
@@ -208,9 +208,9 @@ export function generateExecutiveMemo(input: ExecutiveMemoInput): ExecutiveMemo 
     export_text: markdownMemo,
     evidence_card_ids: evidenceCardIds,
     assumptions: [
-      "EconoSense does not claim perfect prediction.",
-      "Evidence cards are required for final claims unless a claim is explicitly labeled as an assumption.",
-      "Mock fallback data is suitable for demo use only."
+      "GovPulse does not claim perfect prediction.",
+      "Citations are required for final claims unless a claim is explicitly labeled as an assumption.",
+      "Source-adapter fallback data is suitable for planning only until live connectors validate it."
     ]
   };
 }
@@ -243,7 +243,7 @@ function renderMarkdownMemo(
     `**Recommendation:** ${recommendation}`,
     `**Confidence:** ${Math.round(confidence * 100)}%`,
     "",
-    "This memo is a scenario forecast, not a claim of perfect prediction.",
+    "This memo is scenario analysis, not a claim of perfect prediction.",
     ""
   ];
 
@@ -255,7 +255,7 @@ function renderMarkdownMemo(
       lines.push(`- ${bullet}`);
     }
     lines.push("");
-    lines.push(`Evidence cards: ${sectionValue.evidence_card_ids.length > 0 ? sectionValue.evidence_card_ids.join(", ") : "assumption-labeled"}`);
+    lines.push(`Citations: ${sectionValue.evidence_card_ids.length > 0 ? sectionValue.evidence_card_ids.join(", ") : "assumption-labeled"}`);
     lines.push(`Confidence: ${Math.round(sectionValue.confidence * 100)}%`);
     if (sectionValue.assumptions.length > 0) {
       lines.push(`Assumptions: ${sectionValue.assumptions.join(" | ")}`);
