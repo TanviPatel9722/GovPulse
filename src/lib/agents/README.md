@@ -31,3 +31,14 @@ Combines policy redesign options, impact-chain simulation, and executive memo ge
 ## Source Discipline
 
 Public social signals are treated as amplification signals, not representative resident sentiment.
+
+## Dynamic Fallback Discipline
+
+Fallback outputs should be derived from the parsed policy, not from a fixed demo script.
+
+Current guardrails:
+
+- AI hiring routing requires both an AI/automation signal and a hiring/employment signal.
+- Housing, health, energy, environment, and generic policies should produce different affected groups, industries, stakeholders, and redesign options.
+- Numeric outputs use ranges with source labels unless backed by official or validated data.
+- CrustData mock stakeholders should match the policy domain when live data is unavailable.

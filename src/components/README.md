@@ -41,3 +41,14 @@ The first analysis view should now prioritize:
 - confidence and validation notes instead of false-precision public-opinion percentages
 
 People Sentiment should answer: "How will people react, and what do we still need to validate?"
+
+## Dynamic Insight Ranking
+
+Panels should not show the first four records from the analysis payload.
+
+The UI ranks:
+
+- top people groups by policy relevance, sentiment intensity, confidence, and evidence
+- top industries by impact type, metric specificity, confidence, and policy match
+- top financial risks by category severity, evidence label, and metric specificity
+- top redesign options by expected risk reduction and confidence
