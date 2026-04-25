@@ -1,0 +1,36 @@
+version: 1
+principle: "Bold chain-reaction simulation must remain evidence-aware and assumption-labeled."
+trust_tiers:
+  official-statistical:
+    use_for: ["source-backed metrics", "economic baselines", "fiscal capacity", "labor data", "demographics"]
+    examples: ["BEA", "BLS", "Census ACS", "FRED", "U.S. Treasury", "USAspending", "Data.gov", "Socrata local open data"]
+  official-policy:
+    use_for: ["policy text", "legal obligations", "deadlines", "agency notices", "statutory context"]
+    examples: ["Federal Register", "Regulations.gov", "Congress.gov", "state/local government documents"]
+  peer-reviewed:
+    use_for: ["causal evidence", "historical comparison", "research-backed mechanisms"]
+    examples: ["NBER and peer-reviewed economic literature"]
+  research-institution:
+    use_for: ["macro framing", "sector research", "development policy", "financial context"]
+    examples: ["Brookings", "IMF", "World Bank", "Federal Reserve / Cleveland Fed", "UN DESA"]
+  think-tank:
+    use_for: ["policy interpretation", "equity arguments", "worker or household impact framing"]
+    examples: ["Economic Policy Institute", "Center on Budget and Policy Priorities"]
+    rule: "Disclose perspective. Do not treat as neutral statistical ground truth."
+  consulting-methodology:
+    use_for: ["memo structure", "cost-benefit framing", "uncertainty language", "economic-impact method inspiration"]
+    examples: ["Analysis Group public examples", "IMPLAN-style methodology", "survey/experimental methods"]
+    rule: "Use for methodology only. Do not copy claims."
+  news-media:
+    use_for: ["narrative salience", "media framing", "local reaction signals"]
+    examples: ["GDELT", "Media Cloud", "local news"]
+  public-comment:
+    use_for: ["stakeholder positions", "rulemaking comments", "organized campaign detection"]
+    examples: ["Regulations.gov public comments"]
+  social-signal:
+    use_for: ["online amplification", "misinformation detection", "confusion signals"]
+    rule: "Never representative by itself."
+  background-only:
+    use_for: ["terminology orientation", "internal query generation"]
+    examples: ["Investopedia", "Reddit", "general blogs"]
+    rule: "Do not cite in final analysis as evidence."

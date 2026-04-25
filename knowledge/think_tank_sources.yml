@@ -1,0 +1,21 @@
+think_tank_sources:
+  - name: Economic Policy Institute
+    perspective: "labor and worker-centered policy perspective"
+    best_for: ["worker impact", "wage policy", "low-income household burden", "equity framing"]
+    use_rule: "Useful for interpretation and equity arguments; corroborate exact metrics with official data."
+  - name: Center on Budget and Policy Priorities
+    perspective: "anti-poverty and budget-equity policy perspective"
+    best_for: ["low-income household impact", "budget distribution", "safety-net analysis"]
+    use_rule: "Disclose perspective and do not treat as neutral statistical ground truth."
+  - name: Brookings Economic Studies
+    perspective: "research institution with policy-analysis orientation"
+    best_for: ["historical comparison", "urban/regional economics", "macro policy framing"]
+    use_rule: "Review author methodology and scope before applying to local policy."
+development_policy_sources:
+  - name: World Bank Policy Research Reports
+    best_for: ["development policy", "distributional analysis", "institutional capacity"]
+  - name: Gates Foundation economic development policy
+    perspective: "foundation-funded development-policy perspective"
+    best_for: ["program design examples", "global poverty and health economics"]
+  - name: UN DESA Economic Analysis and Policy Division
+    best_for: ["global economic context", "development macro policy"]

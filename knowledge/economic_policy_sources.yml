@@ -1,0 +1,162 @@
+sources:
+  - id: epi
+    name: Economic Policy Institute
+    trust_tier: think-tank
+    best_for:
+      - worker impact
+      - wages
+      - labor standards
+      - inequality
+      - low and middle income households
+    avoid_for:
+      - official statistics
+      - neutral fiscal scoring
+    limitations:
+      - policy perspective may emphasize worker-centered and labor-oriented analysis
+
+  - id: treasury_economic_policy
+    name: U.S. Department of the Treasury - Economic Policy
+    trust_tier: official-policy
+    best_for:
+      - fiscal capacity
+      - taxable resources
+      - public finance
+      - Social Security and Medicare trustee reports
+    avoid_for:
+      - local sentiment
+      - granular household behavior
+    limitations:
+      - official fiscal datasets may not explain public reaction directly
+
+  - id: analysis_group
+    name: Analysis Group - Public Policy & Economic Impact Analysis
+    trust_tier: consulting-methodology
+    best_for:
+      - economic impact methodology
+      - cost benefit framing
+      - survey and experimental study examples
+      - consulting-grade memo structure
+    avoid_for:
+      - direct factual claims unless sourced separately
+    limitations:
+      - use as methodology inspiration, not as primary evidence
+
+  - id: bea
+    name: U.S. Bureau of Economic Analysis
+    trust_tier: official-statistical
+    best_for:
+      - GDP
+      - regional economic accounts
+      - personal income
+      - industry output
+      - input-output context
+    avoid_for:
+      - real-time public sentiment
+    limitations:
+      - data may lag real-time policy debates
+
+  - id: cbpp
+    name: Center on Budget and Policy Priorities
+    trust_tier: think-tank
+    best_for:
+      - low-income household impact
+      - federal and state budget analysis
+      - safety net programs
+      - tax and transfer policy
+    avoid_for:
+      - neutral official statistics without cross-checking
+    limitations:
+      - equity-focused policy perspective should be disclosed
+
+  - id: brookings_economic_studies
+    name: Brookings Economic Studies
+    trust_tier: research-institution
+    best_for:
+      - economic policy analysis
+      - mobility
+      - fiscal and monetary policy
+      - climate-resilient growth
+      - public-facing policy interpretation
+    avoid_for:
+      - raw statistical baselines when official data exists
+    limitations:
+      - research interpretation should be separated from official data
+
+  - id: imf_fiscal_policy
+    name: IMF Fiscal Policy Resources
+    trust_tier: research-institution
+    best_for:
+      - fiscal policy theory
+      - taxation and spending effects
+      - macroeconomic stability
+      - fiscal multipliers
+      - public debt and fiscal space
+    avoid_for:
+      - local U.S. neighborhood sentiment
+    limitations:
+      - macro frameworks may not translate directly to local policies
+
+  - id: nber
+    name: National Bureau of Economic Research
+    trust_tier: peer-reviewed
+    best_for:
+      - academic economic evidence
+      - causal inference
+      - policy outcome studies
+      - historical economic effects
+    avoid_for:
+      - real-time operational data
+    limitations:
+      - findings may be technical and context-specific
+
+  - id: world_bank_policy_research
+    name: World Bank Policy Research Reports
+    trust_tier: research-institution
+    best_for:
+      - development policy
+      - international comparison
+      - industrial policy
+      - poverty and resilience
+      - climate adaptation policy
+    avoid_for:
+      - U.S.-specific hyperlocal analysis unless relevant
+    limitations:
+      - development-country focus may not always map to U.S. local policy
+
+  - id: cleveland_fed
+    name: Federal Reserve Bank of Cleveland Economic Commentary
+    trust_tier: official-policy
+    best_for:
+      - monetary policy context
+      - inflation
+      - labor market
+      - financial conditions
+      - accessible economic commentary
+    avoid_for:
+      - direct policy sentiment
+    limitations:
+      - commentary is interpretive, not a substitute for raw datasets
+
+  - id: investopedia
+    name: Investopedia
+    trust_tier: background-only
+    best_for:
+      - terminology
+      - basic economics explanations
+    avoid_for:
+      - final evidence
+      - official policy claims
+    limitations:
+      - not a primary research or official statistical source
+
+  - id: reddit
+    name: Reddit
+    trust_tier: background-only
+    best_for:
+      - informal public language discovery
+      - possible narrative exploration
+    avoid_for:
+      - representative sentiment
+      - source-backed claims
+    limitations:
+      - highly non-representative and should not be used as evidence

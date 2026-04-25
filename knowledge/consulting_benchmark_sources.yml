@@ -1,0 +1,14 @@
+consulting_benchmark_sources:
+  - name: Analysis Group public policy and economic impact analysis
+    use_for: ["consulting-grade memo structure", "economic-impact framing", "uncertainty and assumptions presentation"]
+    do_not_use_for: ["copying claims", "source-backed facts", "automatic estimates"]
+  - name: IMPLAN-style economic impact methodology
+    use_for: ["input-output logic", "direct/indirect/induced effect framing", "economic-impact report structure"]
+    do_not_use_for: ["precise multipliers without a model", "unsupported local estimates"]
+  - name: Cost-benefit analysis examples
+    use_for: ["cost categories", "benefit categories", "sensitivity analysis"]
+    do_not_use_for: ["policy-specific facts without sourced inputs"]
+  - name: Survey and experimental study methodology references
+    use_for: ["representative listening design", "validation questions", "field-test structure"]
+    do_not_use_for: ["claiming measured public opinion before measurement"]
+rule: "Consulting benchmark sources inspire format and method. They are not primary evidence."
